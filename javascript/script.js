@@ -82,6 +82,7 @@ function generateQuestion(){
     container.appendChild(finalScore);
 
     var form = document.createElement("form");
+    form.setAttribute("action","highscores.html")
     form.setAttribute("style", "display: none");
     container.appendChild(form);
 
@@ -107,10 +108,9 @@ function generateQuestion(){
     var buttonDiv = document.createElement("div");
     buttonDiv.setAttribute("class", "col-4");
     formRow.appendChild(buttonDiv);
-    var submitBtn = document.createElement("a");
+    var submitBtn = document.createElement("button");
     submitBtn.setAttribute("class", "btn btn-danger");
-    submitBtn.setAttribute("href", "highscores.html");
-    submitBtn.setAttribute("role","button");
+    submitBtn.setAttribute("type", "submit");
     submitBtn.textContent = "Submit";
     buttonDiv.appendChild(submitBtn);
 
@@ -162,7 +162,8 @@ function generateQuestion(){
 
                 form.setAttribute("style", "display: block");
 
-                submitBtn.addEventListener("click",function(event){
+                form.addEventListener("submit",function(event){
+                    event.preventDefault;
 
                     var highscore = {initial: input.value, score: secondsRemaining};
                     storedHighscores.push(highscore);
