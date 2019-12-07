@@ -6,7 +6,10 @@ var timeLeft = document.querySelector("#time-left");
 var questionIndex = 0; //stores the index of the questions[] array
 var totalSeconds = questions.length * 15; // stores the total seconds alloted, will be updated upon wrong answer
 var secondsRemaining = totalSeconds; //stores the seconds displayed on the screen
-var highscores = []; //stores highscores
+var storedHighscores = [];
+if(localStorage.getItem("highscores") !== null){
+    storedHighscores = JSON.parse(localStorage.getItem("highscores"));
+}
 //launches the program
 function startQuiz(){
     homeBody.setAttribute("style","display:none");
@@ -158,9 +161,12 @@ function generateQuestion(){
 
                 form.setAttribute("style", "display: block");
 
-                submitBtn.addEventListener("click",function(){
-                    highscores.push({initial: input.value, score: secondsRemaining});
-                    alert(highscores[0].initial + " " + highscores[0].score);
+                submitBtn.addEventListener("click",function(event){
+
+                    var highscore = {initial: input.value, score: secondsRemaining};
+                    storedHighscores.push(highscore);
+                    localStorage.setItem("highscores",JSON.stringify(storedHighscores));
+
                 });
             }
 
