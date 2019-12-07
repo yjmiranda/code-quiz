@@ -45,7 +45,7 @@ The website generates a multiple choice quiz with a timer and stores the results
             }
         },1000);
 ```
-The timer would not display the correct final time if the
+The timer would not display the correct final time if the last question was answered incorrectly. To fix this, I added an adjuster that would let the time run for one more second after the last question was answered.
 
 ## Author
 
