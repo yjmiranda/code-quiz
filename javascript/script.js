@@ -2,6 +2,7 @@
 var homeBody = document.querySelector("#home-body");
 var startBtn = document.querySelector("#start-btn");
 var timeLeft = document.querySelector("#time-left");
+var scoresList = document.querySelector("#scores-list");
 
 var questionIndex = 0; //stores the index of the questions[] array
 var totalSeconds = questions.length * 15; // stores the total seconds alloted, will be updated upon wrong answer
@@ -187,4 +188,42 @@ function generateQuestion(){
     });
 }
 
-startBtn.addEventListener("click",startQuiz);
+
+function generateScoresList(){
+    //sorts the array from highest score to lowest score
+    storedHighscores.sort(compare);
+
+    for(var i = 0; i < storedHighscores.length; i++){
+        var scoreListEl = document.createElement("li");
+        scoreListEl.setAttribute("class" , "score-element");
+        scoresList.appendChild(scoreListEl);
+        var scoreEl = document.createElement("span");
+        scoreEl.textContent = (i+1) + ". " +  storedHighscores[i].initial + "-" + storedHighscores[i].score;
+        scoreListEl.appendChild(scoreEl);
+    }
+
+}
+
+//used to sort object array
+function compare(a, b) {
+
+    const scoreA = a.score;
+    const scoreB = b.score;
+  
+    let comparison = 0;
+
+    if (scoreA < scoreB) {
+      comparison = 1;
+    } else if (scoreA > scoreB) {
+      comparison = -1;
+    }
+    return comparison;
+}
+
+function clearScoresList(){
+    localStorage.clear();
+
+    while (scoresList.hasChildNodes()) {  
+        scoresList.removeChild(scoresList.firstChild);
+      }
+}
