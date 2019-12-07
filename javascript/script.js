@@ -55,7 +55,7 @@ function generateQuestion(){
     container.setAttribute("class","container");
     document.body.appendChild(container);
 
-    var questionEl = document.createElement("h4");
+    var questionEl = document.createElement("h2");
     var choicesList = document.createElement("ol");
 
     questionEl.textContent = questions[questionIndex].title;
@@ -71,18 +71,19 @@ function generateQuestion(){
 
         var choiceBtn = document.createElement("button");
         choiceBtn.setAttribute("type","button");
-        choiceBtn.setAttribute("class", "btn mb-2");
+        choiceBtn.setAttribute("class", "btn btn-lg btn-danger mb-2");
         choiceBtn.setAttribute("id" , i);
         choiceBtn.textContent = questions[questionIndex].choices[i];
         choiceEl.appendChild(choiceBtn);
     }
-    var finalScore = document.createElement("h5");
+    var finalScore = document.createElement("h3");
     finalScore.textContent = "";
     finalScore.setAttribute("style", "display: none");
     container.appendChild(finalScore);
 
     var form = document.createElement("form");
     form.setAttribute("action","highscores.html")
+    form.setAttribute("class","mt-3");
     form.setAttribute("style", "display: none");
     container.appendChild(form);
 
@@ -91,14 +92,15 @@ function generateQuestion(){
     form.appendChild(formRow);
 
     var labelDiv = document.createElement("div");
-    labelDiv.setAttribute("class","col-2 mb-n1");
+    labelDiv.setAttribute("class","col-12 col-lg-2 mb-n1");
     formRow.appendChild(labelDiv);
     var label = document.createElement("label");
+    label.setAttribute("style","font-size: 25px");
     label.textContent = "Enter initials: ";
     labelDiv.appendChild(label);
 
     var inputDiv = document.createElement("div");
-    inputDiv.setAttribute("class", "col-6");
+    inputDiv.setAttribute("class", "col-12 col-lg-6 mb-2");
     formRow.appendChild(inputDiv);
     var input = document.createElement("input");
     input.setAttribute("type","text");
@@ -106,7 +108,7 @@ function generateQuestion(){
     inputDiv.appendChild(input);
 
     var buttonDiv = document.createElement("div");
-    buttonDiv.setAttribute("class", "col-4");
+    buttonDiv.setAttribute("class", "col-12 col-lg-4");
     formRow.appendChild(buttonDiv);
     var submitBtn = document.createElement("button");
     submitBtn.setAttribute("class", "btn btn-danger");
@@ -196,7 +198,7 @@ function generateScoresList(){
 
     for(var i = 0; i < storedHighscores.length; i++){
         var scoreListEl = document.createElement("li");
-        scoreListEl.setAttribute("class" , "score-element");
+        scoreListEl.setAttribute("class" , "bg-secondary text-white mb-2 score-element");
         scoresList.appendChild(scoreListEl);
         var scoreEl = document.createElement("span");
         scoreEl.textContent = (i+1) + ". " +  storedHighscores[i].initial + "-" + storedHighscores[i].score;
