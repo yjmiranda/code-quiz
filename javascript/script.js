@@ -6,6 +6,7 @@ var timeLeft = document.querySelector("#time-left");
 var questionIndex = 0; //stores the index of the questions[] array
 var totalSeconds = questions.length * 15; // stores the total seconds alloted, will be updated upon wrong answer
 var secondsRemaining = totalSeconds; //stores the seconds displayed on the screen
+var highscores = []; //stores highscores
 //launches the program
 function startQuiz(){
     homeBody.setAttribute("style","display:none");
@@ -22,6 +23,9 @@ function startTimer(){
         setInterval(function(){
             if (secondsElapsed <= totalSeconds && questionIndex < questions.length){
                 secondsRemaining = totalSeconds - secondsElapsed;
+                if(secondsRemaining <= 0){
+                    secondsRemaining = 0;
+                }
                 timeLeft.textContent = secondsRemaining;
                 secondsElapsed++;
                 secondAdjuster = secondsElapsed + 1; 
@@ -31,6 +35,9 @@ function startTimer(){
             else if (questionIndex === questions.length){
                 if (secondsElapsed < secondAdjuster){
                     secondsRemaining = (totalSeconds - secondsElapsed) + 1;
+                    if(secondsRemaining <= 0){
+                        secondsRemaining = 0;
+                    }
                     timeLeft.textContent = secondsRemaining;
                     secondsElapsed++;
                 }
@@ -65,6 +72,44 @@ function generateQuestion(){
         choiceBtn.textContent = questions[questionIndex].choices[i];
         choiceEl.appendChild(choiceBtn);
     }
+    var finalScore = document.createElement("h5");
+    finalScore.textContent = "";
+    finalScore.setAttribute("style", "display: none");
+    container.appendChild(finalScore);
+
+    var form = document.createElement("form");
+    form.setAttribute("style", "display: none");
+    container.appendChild(form);
+
+    var formRow = document.createElement("div");
+    formRow.setAttribute("class", "form-row");
+    form.appendChild(formRow);
+
+    var labelDiv = document.createElement("div");
+    labelDiv.setAttribute("class","col-2 mb-n1");
+    formRow.appendChild(labelDiv);
+    var label = document.createElement("label");
+    label.textContent = "Enter initials: ";
+    labelDiv.appendChild(label);
+
+    var inputDiv = document.createElement("div");
+    inputDiv.setAttribute("class", "col-6");
+    formRow.appendChild(inputDiv);
+    var input = document.createElement("input");
+    input.setAttribute("type","text");
+    input.setAttribute("class", "form-control");
+    inputDiv.appendChild(input);
+
+    var buttonDiv = document.createElement("div");
+    buttonDiv.setAttribute("class", "col-4");
+    formRow.appendChild(buttonDiv);
+    var submitBtn = document.createElement("a");
+    submitBtn.setAttribute("class", "btn btn-danger");
+    submitBtn.setAttribute("href", "highscores.html");
+    submitBtn.setAttribute("role","button");
+    submitBtn.textContent = "Submit";
+    buttonDiv.appendChild(submitBtn);
+
     var hr = document.createElement("hr");
     container.appendChild(hr);
     hr.setAttribute("style", "display: none");
@@ -95,15 +140,34 @@ function generateQuestion(){
                     document.getElementById(i).textContent = questions[questionIndex].choices[i];
                 }
             }
+            //sets what happens after the final question is answered
             else if(questionIndex >= questions.length){
-                questionEl.setAttribute("style", "display: none");
+                questionEl.textContent = "All done!";
                 choicesList.setAttribute("style", "display: none");
+
+                if (result.textContent === "Wrong!" && secondsRemaining >= 15){
+                    finalScore.textContent = "Your final score is " + (secondsRemaining-15) + ".";
+                }
+                else if(result.textContent === "Wrong!" && secondsRemaining < 15){
+                    finalScore.textContent = "Your final score is " + 0 + ".";
+                }
+                else{
+                    finalScore.textContent = "Your final score is " + secondsRemaining + ".";
+                }
+                finalScore.setAttribute("style", "display: block");
+
+                form.setAttribute("style", "display: block");
+
+                submitBtn.addEventListener("click",function(){
+                    highscores.push({initial: input.value, score: secondsRemaining});
+                    alert(highscores[0].initial + " " + highscores[0].score);
+                });
             }
 
             hr.setAttribute("style", "display: block");
             result.setAttribute("style","display: block");
 
-            var resultTimer = 3;
+            var resultTimer = 2;
             setInterval(function(){
                 if (resultTimer > 0){
                     resultTimer--;
